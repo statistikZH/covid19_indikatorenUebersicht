@@ -1,6 +1,6 @@
 {
   "name": "covid19_indikatoren_uebersicht",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Quasar Framework app",
   "productName": "Covid19 Indikatoren Uebersicht",
   "cordovaId": "org.cordova.quasar.app",
