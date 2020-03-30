@@ -1,4 +1,4 @@
-# Covid19 Indikatoren Uebersicht (covid19_indikatoren_uebersicht)
+# Covid19 Indikatoren Uebersicht
 Eine Übersicht zu den Indikatoren
 
 A Quasar Framework app
