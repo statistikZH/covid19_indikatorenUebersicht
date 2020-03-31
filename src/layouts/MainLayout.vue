@@ -4,7 +4,7 @@
     <q-header elevated>
       <q-toolbar class="items-start">
         <q-toolbar-title class="no-ellipsis q-py-sm">
-          Covid-19 Indikatoren Übersicht
+          Gesellschaftsmonitoring Covid19
         </q-toolbar-title>
         <img src="../assets/ktzh-logo-mobile.svg" alt="Logo Kanton Zürich" class="q-mt-sm" />
       </q-toolbar>
@@ -18,7 +18,7 @@
       <q-toolbar>
         <q-toolbar-title>
           {{ version }}
-          <a href="https://github.com/statistikZH/covid19_scrapingdashboard/blob/master/CHANGELOG.md" style="color:#ccc">
+          <a href="https://github.com/statistikZH/covid19_indikatorenUebersicht/blob/master/CHANGELOG.md" style="color:#ccc">
             changelog
           </a>
         </q-toolbar-title>
