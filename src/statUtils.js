@@ -28,11 +28,14 @@ export default {
     }
     return number
   },
-  loadCSV (path, callback) { // { path: '', callback: () => {}}
+  loadCSV (path, callback) { // { path: '', callback: (data) => {}}
     $axios.get(path)
       .then((response) => {
         const lines = response.data.split('\n')
         const headers = lines[0].split(',')
+        for (let i = 0; i < headers.length; i++) {
+          headers[i] = headers[i].replace(/(^")|("$)/g, '')
+        }
 
         // skip first header line and loop recursive
         const array = []
@@ -40,8 +43,8 @@ export default {
           if (lines[i] !== '') {
             const line = lines[i].split(',')
             const obj = {}
-            for (let e = 0; e < lines.length; e++) {
-              obj[headers[e]] = line[e]
+            for (let e = 0; e < line.length; e++) {
+              obj[headers[e]] = line[e].replace(/(^")|("$)/g, '')
             }
             array.push(obj)
           }
