@@ -87,8 +87,8 @@
                 <div class="col-12 col-sm-6 col-md-2">
                   <q-item-label caption>Download</q-item-label>
                   <q-item-label>
-                    <ui-download label="CSV" color="bg-green-4" @click.native="csv(props.row.group)" class="q-mb-sm q-mr-sm" />
-                    <ui-download label="JSON" color="bg-orange-4" @click.native="json(props.row.group)" class="q-mb-sm" />
+                    <ui-download label="CSV" color="bg-green-4" @click.native="$statUtils.exportCSVfromObj(props.row.group)" class="q-mb-sm q-mr-sm" />
+                    <ui-download label="JSON" color="bg-orange-4" @click.native="$statUtils.exportJSONfromObj(props.row.group)" class="q-mb-sm" />
                   </q-item-label>
                 </div>
               </div>
@@ -220,43 +220,6 @@ export default {
         this.pagination.sortBy = field
         this.pagination.descending = false
       }
-    },
-    csv (obj) {
-      // headers
-      let string = Object.keys(obj[0]).join(',') + '\r\n'
-      for (const line of obj) {
-        string += Object.values(line).join(',') + '\r\n'
-      }
-      var exportedFilenmae = 'Covid-18_' + (new Date().toLocaleDateString().replace(' ', '_')) + '.csv'
-      var blob = new Blob([string], { type: 'text/csvcharset=utf-16le' })
-      if (navigator.msSaveBlob) { // IE 10+
-        navigator.msSaveBlob(blob, exportedFilenmae)
-      } else {
-        var link = document.createElement('a')
-        if (link.download !== undefined) { // feature detection
-          // Browsers that support HTML5 download attribute
-          var url = URL.createObjectURL(blob)
-          link.setAttribute('href', url)
-          link.setAttribute('download', exportedFilenmae)
-          link.style.visibility = 'hidden'
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
-        }
-      }
-    },
-    json (obj) {
-      const data = JSON.stringify(obj, undefined, 4)
-
-      var blob = new Blob([data], { type: 'text/json' }),
-        e = document.createEvent('MouseEvents'),
-        a = document.createElement('a')
-
-      a.download = 'Covid-18_' + (new Date().toLocaleDateString().replace(' ', '_')) + '.json'
-      a.href = window.URL.createObjectURL(blob)
-      a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
-      e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
-      a.dispatchEvent(e)
     },
     dateRange (data) {
       const dates = data.map(o => this.$statUtils.sortDateToSeconds(o.date))
