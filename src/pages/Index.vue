@@ -3,13 +3,20 @@
     <div class="q-ma-md">
 
       <p>Das Monitoring bündelt tagesaktuelle Datenreihen, welche die Entwicklungen beleuchten sollen, die durch die Corona-Kriese in allen Lebensbereichen auslöst werden.</p>
-      <div class="row q-gutter-sm q-mb-md items-center">
+
+      <h2 class="q-mt-lg q-mb-sm text-h6">Links</h2>
+
+      <div class="row q-gutter-sm q-mb-sm items-center">
         <span>Mehr Informationen zum Monitoring:</span>
-        <ui-link :href="monitoring" />
+        <ui-link label="Gesellschaftsmonitoring COVID19" :href="monitoring" />
+      </div>
+      <div class="row q-gutter-sm q-mb-sm items-center">
+        <span>Download gesammte Daten:</span>
+        <ui-link label="covid19socialmonitoring.csv (RAW)" :href="urlRepoRaw + socialBeta" />
       </div>
       <div class="row q-gutter-sm q-mb-md items-center">
-        <span>Download gesammte Daten:</span>
-        <ui-link :href="urlRepo + socialBeta" />
+        <span>Ursprüngliche Datenherkunft (intervista, SIX, Flughafen Zürich etc.) / "Gesellschaftsmonitoring Covid-19 STAT"</span>
+        <ui-link label="Analysen und Daten zu COVID19" :href="statistik" />
       </div>
 
       <!-- loading or table -->
@@ -104,10 +111,6 @@
       <div class="row q-gutter-sm q-mb-md items-center">
         <span>MIT License:</span>
         <ui-link :href="license" />
-      </div>
-      <div class="row q-gutter-sm q-mb-xl items-center">
-        <span>Ursprüngliche Datenherkunft (intervista, SIX, Flughafen Zürich etc.) / "Gesellschaftsmonitoring Covid-19 STAT"</span>
-        <ui-link :href="statistik" />
       </div>
 
     </div>
