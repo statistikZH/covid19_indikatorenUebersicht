@@ -57,7 +57,7 @@
 
           <!-- stacked rows -->
           <template v-slot:item="props">
-            <div class="q-pa-xs q-py-md col-12 grid-style-transition block">
+            <div class="q-pa-xs q-py-sm col-12 grid-style-transition block">
               <div class="row q-col-gutter-md">
                 <div class="col-12 col-sm-6 col-md-2">
                   <q-item-label caption>Thema</q-item-label>
@@ -90,8 +90,8 @@
                 <div class="col-12 col-sm-6 col-md-2">
                   <q-item-label caption>Download</q-item-label>
                   <q-item-label>
-                    <ui-download label="CSV" color="bg-green-4" @click.native="$statUtils.exportCSVfromObj(props.row.group)" class="q-mb-sm q-mr-sm" />
-                    <ui-download label="JSON" color="bg-orange-4" @click.native="$statUtils.exportJSONfromObj(props.row.group)" class="q-mb-sm" />
+                    <ui-download label="CSV" color="bg-green-4" @click.native="$statUtils.exportCSVfromObj(fileName(props.row) + '.csv', props.row.group)" class="q-mb-sm q-mr-sm" />
+                    <ui-download label="JSON" color="bg-orange-4" @click.native="$statUtils.exportJSONfromObj(fileName(props.row) + '.json', props.row.group)" class="q-mb-sm" />
                   </q-item-label>
                 </div>
               </div>
@@ -213,6 +213,17 @@ export default {
     }
   },
   methods: {
+    fileName (row) {
+      let string = `Covid-19_${row.variable_short}_${row.location}_${row.source}_` + new Date().toLocaleDateString().replace(' ', '_')
+      string = string.replace(/ä/g, 'ae')
+      string = string.replace(/ö/g, 'oe')
+      string = string.replace(/ü/g, 'ue')
+      string = string.replace(/Ä/g, 'Ae')
+      string = string.replace(/Ö/g, 'Oe')
+      string = string.replace(/Ü/g, 'Ue')
+      string = string.replace(/\W+/g, '-')
+      return string
+    },
     headerClick (field) {
       if (this.pagination.sortBy === field) {
         if (this.pagination.descending === true) {
