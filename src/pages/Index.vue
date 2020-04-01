@@ -87,8 +87,8 @@
                 <div class="col-12 col-sm-6 col-md-2">
                   <q-item-label caption>Download</q-item-label>
                   <q-item-label>
-                    <ui-download label="CSV" color="bg-green-4" @click.native="csv(props.row.group)" class="q-mr-sm" />
-                    <ui-download label="JSON" color="bg-orange-4" @click.native="json(props.row.group)" />
+                    <ui-download label="CSV" color="bg-green-4" @click.native="csv(props.row.group)" class="q-mb-sm q-mr-sm" />
+                    <ui-download label="JSON" color="bg-orange-4" @click.native="json(props.row.group)" class="q-mb-sm" />
                   </q-item-label>
                 </div>
               </div>
@@ -222,17 +222,13 @@ export default {
       }
     },
     csv (obj) {
-      /*
-      obj[0]
-
-      const csv = []
-      this.convertToCSV(items)
-      let string = ''
-      for (let line of csv) {
-        string += line.join(',') + '\r\n'
+      // headers
+      let string = Object.keys(obj[0]).join(',') + '\r\n'
+      for (const line of obj) {
+        string += Object.values(line).join(',') + '\r\n'
       }
       var exportedFilenmae = 'Covid-18_' + (new Date().toLocaleDateString().replace(' ', '_')) + '.csv'
-      var blob = new Blob([string], { type: 'text/csvcharset=utf-8' })
+      var blob = new Blob([string], { type: 'text/csvcharset=utf-16le' })
       if (navigator.msSaveBlob) { // IE 10+
         navigator.msSaveBlob(blob, exportedFilenmae)
       } else {
@@ -248,7 +244,6 @@ export default {
           document.body.removeChild(link)
         }
       }
-      */
     },
     json (obj) {
       const data = JSON.stringify(obj, undefined, 4)
