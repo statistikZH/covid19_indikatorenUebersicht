@@ -92,7 +92,7 @@
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <q-item-label caption>Doku</q-item-label>
-                  <q-item-label>{{ props.row.description }}</q-item-label>
+                  <q-item-label><ui-link :label="props.row.description" :href="props.row.description" /></q-item-label>
                 </div>
                 <div class="col-12 col-sm-6 col-md-2">
                   <q-item-label caption>Download</q-item-label>
