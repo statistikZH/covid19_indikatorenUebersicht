@@ -2,7 +2,7 @@
   <a :href="href" target="_blank">
     <q-chip square class="q-ma-none">
       <q-avatar icon="call_made" color="grey-6" text-color="white" />
-      {{ label }}
+      <span class="ellipsis">{{ label }}</span>
     </q-chip>
   </a>
 </template>
