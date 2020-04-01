@@ -3,10 +3,13 @@
     <div class="q-ma-md">
 
       <p>Das Monitoring bündelt tagesaktuelle Datenreihen, welche die Entwicklungen beleuchten sollen, die durch die Corona-Kriese in allen Lebensbereichen auslöst werden.</p>
-
-      <div class="row q-gutter-sm q-mb-md items-start">
-        <p>Download gesammte Daten:</p>
-        <ui-link :label="urlRepo + socialBeta" :href="urlRepo + metadata" />
+      <div class="row q-gutter-sm q-mb-md items-center">
+        <span>Mehr Informationen zum Monitoring:</span>
+        <ui-link :href="monitoring" />
+      </div>
+      <div class="row q-gutter-sm q-mb-md items-center">
+        <span>Download gesammte Daten:</span>
+        <ui-link :href="urlRepo + socialBeta" />
       </div>
 
       <!-- loading or table -->
@@ -98,12 +101,12 @@
       </template>
 
       <!-- license -->
-      <div class="row q-gutter-sm items-start">
-        <p>MIT License:</p>
+      <div class="row q-gutter-sm q-mb-md items-center">
+        <span>MIT License:</span>
         <ui-link :href="license" />
       </div>
-      <div class="row q-gutter-sm q-mb-xl items-start">
-        <p>Ursprüngliche Datenherkunft (intervista, SIX, Flughafen Zürich etc.) / "Gesellschaftsmonitoring Covid-19 STAT"</p>
+      <div class="row q-gutter-sm q-mb-xl items-center">
+        <span>Ursprüngliche Datenherkunft (intervista, SIX, Flughafen Zürich etc.) / "Gesellschaftsmonitoring Covid-19 STAT"</span>
         <ui-link :href="statistik" />
       </div>
 
@@ -141,6 +144,7 @@ export default {
       socialBeta: 'master/covid19socialmonitoring.csv',
       license: 'https://github.com/statistikZH/covid19_indikatorenUebersicht/blob/master/LICENSE',
       statistik: 'https://statistik.zh.ch/internet/justiz_inneres/statistik/de/covid19.html',
+      monitoring: 'https://statistik.zh.ch/internet/justiz_inneres/statistik/de/aktuell/mitteilungen/2020/gesellschaftsmonitoring_covid19.html',
       filter: {
         select: 'Alle',
         options: []
