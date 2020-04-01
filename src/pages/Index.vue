@@ -144,7 +144,7 @@ export default {
       socialBeta: 'master/covid19socialmonitoring.csv',
       license: 'https://github.com/statistikZH/covid19_indikatorenUebersicht/blob/master/LICENSE',
       statistik: 'https://statistik.zh.ch/internet/justiz_inneres/statistik/de/covid19.html',
-      monitoring: 'https://statistik.zh.ch/internet/justiz_inneres/statistik/de/aktuell/mitteilungen/2020/gesellschaftsmonitoring_covid19.html',
+      monitoring: 'https://statistikzh.github.io/covid19monitoring',
       filter: {
         select: 'Alle',
         options: []
