@@ -36,19 +36,17 @@
             <div class="row q-gutter-md" :props="props">
               <div
                 v-for="col in props.cols"
-                class="col-auto"
+                class="col-auto sort_arrow"
                 style="cursor:pointer"
                 :key="col.name"
                 :props="props"
                 @click="headerClick(col.field)"
-                @hover="col.hover = true"
               >
                 <!-- custom header (default one with grid option, overlap the page) -->
                 <q-icon
-                  v-if="pagination.sortBy === col.field"
-                  :name="pagination.descending ? 'arrow_upward' : 'arrow_downward'"
+                  :name="!pagination.descending || pagination.sortBy !== col.field ? 'arrow_upward' : 'arrow_downward'"
+                  :color="pagination.sortBy === col.field ? 'black' : 'white'"
                 />
-                <div v-else style="width:14px; display:inline-block;" />
                 {{ col.label }}
               </div>
             </div>
@@ -100,9 +98,13 @@
       </template>
 
       <!-- license -->
-      <div class="row q-gutter-sm q-mb-md items-start">
+      <div class="row q-gutter-sm items-start">
         <p>MIT License:</p>
         <ui-link :href="license" />
+      </div>
+      <div class="row q-gutter-sm q-mb-xl items-start">
+        <p>Ursprüngliche Datenherkunft (intervista, SIX, Flughafen Zürich etc.) / "Gesellschaftsmonitoring Covid-19 STAT"</p>
+        <ui-link :href="statistik" />
       </div>
 
     </div>
@@ -116,6 +118,9 @@
 }
 .block:first-child {
   border-top-width: 1px;
+}
+.sort_arrow:hover i {
+  color: #999 !important;
 }
 </style>
 
@@ -135,6 +140,7 @@ export default {
       metadata: 'master/Metadata.csv',
       socialBeta: 'master/covid19socialmonitoring.csv',
       license: 'https://github.com/statistikZH/covid19_indikatorenUebersicht/blob/master/LICENSE',
+      statistik: 'https://statistik.zh.ch/internet/justiz_inneres/statistik/de/covid19.html',
       filter: {
         select: 'Alle',
         options: []
@@ -156,10 +162,10 @@ export default {
           sortable: true
         },
         {
-          name: 'download',
+          name: 'update',
           align: 'left',
           label: 'Periodizität',
-          field: 'download',
+          field: 'update',
           sortable: true
         },
         {
