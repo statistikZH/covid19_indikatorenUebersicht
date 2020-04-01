@@ -4,7 +4,7 @@
     <q-header elevated>
       <q-toolbar class="items-start">
         <q-toolbar-title class="no-ellipsis q-py-sm">
-          Gesellschaftsmonitoring Covid19
+          Gesellschaftsmonitoring COVID-19
         </q-toolbar-title>
         <img src="../assets/ktzh-logo-mobile.svg" alt="Logo Kanton Zürich" class="q-mt-sm" />
       </q-toolbar>

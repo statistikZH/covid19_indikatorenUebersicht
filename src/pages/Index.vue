@@ -2,22 +2,21 @@
   <q-page>
     <div class="q-ma-md">
 
-      <p>Das Monitoring bündelt tagesaktuelle Datenreihen, welche die Entwicklungen beleuchten sollen, die durch die Corona-Kriese in allen Lebensbereichen auslöst werden.</p>
-
       <h2 class="q-mt-lg q-mb-sm text-h6">Links</h2>
 
       <div class="row q-gutter-sm q-mb-sm items-center">
         <span>Mehr Informationen zum Monitoring:</span>
-        <ui-link label="Gesellschaftsmonitoring COVID19" :href="monitoring" />
+        <ui-link label="Gesellschaftsmonitoring COVID-19" :href="monitoring" />
       </div>
       <div class="row q-gutter-sm q-mb-sm items-center">
-        <span>Download gesammte Daten:</span>
+        <span>Download gesammter Datensatz, alle Indikatoren:</span>
         <ui-link label="covid19socialmonitoring.csv (RAW)" :href="urlRepoRaw + socialBeta" />
       </div>
       <div class="row q-gutter-sm q-mb-md items-center">
-        <span>Ursprüngliche Datenherkunft (intervista, SIX, Flughafen Zürich etc.) / "Gesellschaftsmonitoring Covid-19 STAT"</span>
-        <ui-link label="Analysen und Daten zu COVID19" :href="statistik" />
+        <span>Weitere Informationen des Statistischen Amtes zur COVID-19-Kriese</span>
+        <ui-link label="Analysen und Daten zu COVID-19" :href="statistik" />
       </div>
+      <cite>Zitierhinweis: Ursprüngliche Datenherkunftsmonitoring COVID-19 Stat</cite>
 
       <!-- loading or table -->
       <q-linear-progress v-if="meta.length === 0" indeterminate class="q-my-xl" />
