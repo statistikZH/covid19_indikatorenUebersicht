@@ -1,6 +1,11 @@
 # Covid19 Indikatoren Uebersicht
 Eine Übersicht zu den Indikatoren
 
+Demo:
+<a href="https://www.web.statistik.zh.ch/covid19_indikatoren_uebersicht/">link</a>
+
+For develop:
+
 A Quasar Framework app
 
 ## Install the dependencies
