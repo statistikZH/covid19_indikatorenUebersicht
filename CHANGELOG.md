@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/statistikZH/covid19_indikatorenUebersicht/compare/v1.0.0...v1.1.0) (2020-04-02)
+
+
+### Features
+
+* Add link for description ([5ff033b](https://github.com/statistikZH/covid19_indikatorenUebersicht/commit/5ff033b2c9fea7366d65ef040d4b5a42d9552053))
+* add sparkline ([6559601](https://github.com/statistikZH/covid19_indikatorenUebersicht/commit/6559601b3cba3bd48625c92450042559d94629c1))
+* update labels ([606df71](https://github.com/statistikZH/covid19_indikatorenUebersicht/commit/606df71a224c38cfb5ef5e91841ac5945a28734d))
+
+
+### Bug Fixes
+
+* cite ([7c97cf8](https://github.com/statistikZH/covid19_indikatorenUebersicht/commit/7c97cf87cf31f2017d8b31428ab492ab9ac876ad))
+* link ellypsis ([172d6f9](https://github.com/statistikZH/covid19_indikatorenUebersicht/commit/172d6f9bd8b398d97c50fc0607386a1d36841dbc))
+* typo ([490bad0](https://github.com/statistikZH/covid19_indikatorenUebersicht/commit/490bad0d42fd822e597c333feee5c8a92ae5f892))
+
 ## [1.0.0](https://github.com/statistikZH/covid19_indikatorenUebersicht/compare/v0.0.2...v1.0.0) (2020-04-01)
 
 
