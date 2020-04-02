@@ -16,7 +16,7 @@
         <span>Weitere Informationen des Statistischen Amtes zur COVID-19-Krise</span>
         <ui-link label="Analysen und Daten zu COVID-19" :href="statistik" />
       </div>
-      <cite>Zitierhinweis: Ursprüngliche Datenherkunftsmonitoring COVID-19 Stat</cite>
+      <cite>Zitierhinweis: Ursprüngliche Datenherkunft (intervista, SIX, Flughafen Zürich etc.) / "Gesellschaftsmonitoring COVID-19 STAT"</cite>
 
       <!-- loading or table -->
       <q-linear-progress v-if="meta.length === 0" indeterminate class="q-my-xl" />
