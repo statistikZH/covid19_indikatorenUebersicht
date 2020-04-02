@@ -91,7 +91,14 @@
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <q-item-label caption>Doku</q-item-label>
-                  <q-item-label><ui-link :label="props.row.description" :href="props.row.description" /></q-item-label>
+                  <q-item-label>
+                    <q-chip square class="q-ma-none q-pa-none" color="grey-2">
+                      <ui-sparkline :dot="2" :data="props.row.group.map(o => o.value)" style="float:right" />
+                    </q-chip>
+                    <a :href="props.row.description" target="_blank" style="text-decoration:none">
+                      <q-icon name="info" color="blue-6" size="md" text-color="white" class="q-ml-sm" />
+                    </a>
+                  </q-item-label>
                 </div>
                 <div class="col-12 col-sm-6 col-md-2">
                   <q-item-label caption>Download</q-item-label>
@@ -132,11 +139,13 @@
 <script>
 import UiLink from 'src/components/UiLink.vue'
 import UiDownload from 'src/components/UiDownload.vue'
+import UiSparkline from 'src/components/UiSparkline.vue'
 export default {
   name: 'PageIndex',
   components: {
     UiLink,
-    UiDownload
+    UiDownload,
+    UiSparkline
   },
   data () {
     return {
@@ -186,13 +195,6 @@ export default {
           align: 'left',
           label: 'Quelle',
           field: 'source',
-          sortable: true
-        },
-        {
-          name: 'description',
-          align: 'left',
-          label: 'Doku',
-          field: 'description',
           sortable: true
         }
       ],

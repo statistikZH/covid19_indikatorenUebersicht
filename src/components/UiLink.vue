@@ -1,5 +1,5 @@
 <template>
-  <a :href="href" target="_blank">
+  <a :href="href" target="_blank" style="text-decoration:none">
     <q-chip square class="q-ma-none">
       <q-avatar icon="call_made" color="grey-6" text-color="white" />
       <span class="ellipsis">{{ label }}</span>
