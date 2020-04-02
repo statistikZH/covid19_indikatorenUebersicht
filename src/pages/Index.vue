@@ -13,7 +13,7 @@
         <ui-link label="covid19socialmonitoring.csv (RAW)" :href="urlRepoRaw + socialBeta" />
       </div>
       <div class="row q-gutter-sm q-mb-md items-center">
-        <span>Weitere Informationen des Statistischen Amtes zur COVID-19-Kriese</span>
+        <span>Weitere Informationen des Statistischen Amtes zur COVID-19-Krise</span>
         <ui-link label="Analysen und Daten zu COVID-19" :href="statistik" />
       </div>
       <cite>Zitierhinweis: Ursprüngliche Datenherkunftsmonitoring COVID-19 Stat</cite>
