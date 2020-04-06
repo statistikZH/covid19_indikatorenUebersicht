@@ -218,9 +218,12 @@ export default {
   },
   methods: {
     sparklineData (group) {
-      const values = group.map(o => o.value)
+      let values = group.map(o => o.value)
       // get only last 90
-      return values.slice((values.length - 90), values.length)
+      if (values.length > 90) {
+        values = values.slice((values.length - 90), values.length)
+      }
+      return values
     },
     fileName (row) {
       let string = `Covid-19_${row.variable_short}_${row.location}_${row.source}_` + new Date().toLocaleDateString().replace(' ', '_')
