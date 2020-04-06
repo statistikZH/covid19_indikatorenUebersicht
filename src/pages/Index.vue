@@ -93,7 +93,7 @@
                   <q-item-label caption>Doku</q-item-label>
                   <q-item-label>
                     <q-chip square class="q-ma-none q-pa-none" color="grey-2">
-                      <ui-sparkline :dot="2" :data="props.row.group.map(o => o.value)" style="float:right" />
+                      <ui-sparkline :dot="2" :data="sparklineData(props.row.group)" style="float:right" />
                     </q-chip>
                     <a :href="props.row.description" target="_blank" style="text-decoration:none">
                       <q-icon name="info" color="blue-6" size="md" text-color="white" class="q-ml-sm" />
@@ -217,6 +217,11 @@ export default {
     }
   },
   methods: {
+    sparklineData (group) {
+      const values = group.map(o => o.value)
+      // get only last 90
+      return values.slice((values.length - 90), values.length)
+    },
     fileName (row) {
       let string = `Covid-19_${row.variable_short}_${row.location}_${row.source}_` + new Date().toLocaleDateString().replace(' ', '_')
       string = string.replace(/ä/g, 'ae')
