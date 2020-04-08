@@ -201,11 +201,19 @@ export default {
       pagination: {
         sortBy: 'topic',
         descending: false,
-        rowsPerPage: 50
+        rowsPerPage: 0
       },
       // data defs ---------------------------------------------------------------------------
       meta: [],
       search: ''
+    }
+  },
+  watch: {
+    'pagination.rowsPerPage' (newVal) {
+      this.updateRouter()
+    },
+    'filter.select' (newVal) {
+      this.updateRouter()
     }
   },
   computed: {
@@ -217,6 +225,9 @@ export default {
     }
   },
   methods: {
+    updateRouter () {
+      this.$router.push('/' + this.pagination.rowsPerPage + '/' + this.filter.select)
+    },
     sparklineData (group) {
       let values = group.map(o => o.value)
       // get only last 90
@@ -253,6 +264,17 @@ export default {
       const from = this.$statUtils.sortToLabelDate(this.$statUtils.secondsToLabelDate(Math.min(...dates)))
       const to = this.$statUtils.sortToLabelDate(this.$statUtils.secondsToLabelDate(Math.max(...dates)))
       return `${from} bis ${to}`
+    }
+  },
+  created () {
+    // update properties from router
+    if (this.$route.params.pagination && !isNaN(this.$route.params.pagination)) {
+      this.pagination.rowsPerPage = parseInt(this.$route.params.pagination)
+    } else {
+      this.pagination.rowsPerPage = 50
+    }
+    if (this.$route.params.filter) {
+      this.filter.select = this.$route.params.filter
     }
   },
   mounted () {
