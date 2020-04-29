@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/statistikZH/covid19_indikatorenUebersicht/compare/v1.1.0...v1.2.0) (2020-04-29)
+
+
+### Features
+
+* add filter and pagination in url ([579d261](https://github.com/statistikZH/covid19_indikatorenUebersicht/commit/579d261de3591ddd0325494439a48fd5d13f22d8))
+* limit to 90 values from end ([a04f6f6](https://github.com/statistikZH/covid19_indikatorenUebersicht/commit/a04f6f6b36e2838a0cd1ba88a0333436319231d2))
+
+
+### Bug Fixes
+
+* change NA values to 0 acc. K.Kaelin ([c3fe97d](https://github.com/statistikZH/covid19_indikatorenUebersicht/commit/c3fe97dc2603d10a4a95609f3e992a8a04d0eec3))
+* limit only if more than 90 values exists ([e01eb21](https://github.com/statistikZH/covid19_indikatorenUebersicht/commit/e01eb21b34273db581ed6aa8629ba72039a92709))
+
 ## [1.1.0](https://github.com/statistikZH/covid19_indikatorenUebersicht/compare/v1.0.0...v1.1.0) (2020-04-02)
 
 
