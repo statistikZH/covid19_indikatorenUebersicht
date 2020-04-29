@@ -229,7 +229,7 @@ export default {
       this.$router.push('/' + this.pagination.rowsPerPage + '/' + this.filter.select)
     },
     sparklineData (group) {
-      let values = group.map(o => o.value)
+      let values = group.map(o => o.value !== 'NA' ? o.value : 0)
       // get only last 90
       if (values.length > 90) {
         values = values.slice((values.length - 90), values.length)
