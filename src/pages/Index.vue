@@ -9,8 +9,12 @@
         <ui-link label="Gesellschaftsmonitoring COVID-19" :href="monitoring" />
       </div>
       <div class="row q-gutter-sm q-mb-sm items-center">
-        <span>Download gesammter Datensatz, alle Indikatoren:</span>
+        <span>Download Daten, alle Indikatoren:</span>
         <ui-link label="covid19socialmonitoring.csv (RAW)" :href="urlRepoRaw + socialBeta" />
+      </div>
+      <div class="row q-gutter-sm q-mb-md items-center">
+        <span>Download Metadaten, alle Indikatoren</span>
+        <ui-link label="Metadata.csv (RAW)" :href="urlRepoRaw + metadata" />
       </div>
       <div class="row q-gutter-sm q-mb-md items-center">
         <span>Weitere Informationen des Statistischen Amtes zur COVID-19-Krise</span>
@@ -75,11 +79,15 @@
                 </div>
                 <div class="col-12 col-sm-6 col-md-4">
                   <q-item-label caption>Von - bis</q-item-label>
-                  <q-item-label>{{ props.row.range }}</q-item-label>
+                  <q-item-label>
+                    {{ props.row.date_first_obs.split('-').reverse().join('.') }}
+                    bis
+                    {{ props.row.date_last_obs.split('-').reverse().join('.') }}
+                  </q-item-label>
                 </div>
                 <div class="col-12 col-sm-6 col-md-2">
-                  <q-item-label caption>Periodizität</q-item-label>
-                  <q-item-label>{{ props.row.update }}</q-item-label>
+                  <q-item-label caption>Periodizität / Einheit</q-item-label>
+                  <q-item-label>{{ props.row.update }} / {{ props.row.unit }}</q-item-label>
                 </div>
                 <div class="col-12 col-sm-6 col-md-2">
                   <q-item-label caption>Abdeckung</q-item-label>
@@ -92,19 +100,16 @@
                 <div class="col-12 col-sm-6 col-md-4">
                   <q-item-label caption>Doku</q-item-label>
                   <q-item-label>
-                    <q-chip square class="q-ma-none q-pa-none" color="grey-2">
-                      <ui-sparkline :dot="2" :data="sparklineData(props.row.group)" style="float:right" />
-                    </q-chip>
                     <a :href="props.row.description" target="_blank" style="text-decoration:none">
-                      <q-icon name="info" color="blue-6" size="md" text-color="white" class="q-ml-sm" />
+                      <q-icon name="info" color="blue-6" size="md" text-color="white" />
                     </a>
                   </q-item-label>
                 </div>
                 <div class="col-12 col-sm-6 col-md-2">
                   <q-item-label caption>Download</q-item-label>
                   <q-item-label>
-                    <ui-download label="CSV" color="bg-green-4" @click.native="$statUtils.exportCSVfromObj(fileName(props.row) + '.csv', props.row.group)" class="q-mb-sm q-mr-sm" />
-                    <ui-download label="JSON" color="bg-orange-4" @click.native="$statUtils.exportJSONfromObj(fileName(props.row) + '.json', props.row.group)" class="q-mb-sm" />
+                    <ui-download label="CSV" color="bg-green-4" @click.native="goToCSV(props.row)" class="q-mb-sm q-mr-sm" />
+                    <ui-download label="JSON" color="bg-orange-4" @click.native="getJSON(props.row)" class="q-mb-sm" />
                   </q-item-label>
                 </div>
               </div>
@@ -139,13 +144,11 @@
 <script>
 import UiLink from 'src/components/UiLink.vue'
 import UiDownload from 'src/components/UiDownload.vue'
-import UiSparkline from 'src/components/UiSparkline.vue'
 export default {
   name: 'PageIndex',
   components: {
     UiLink,
-    UiDownload,
-    UiSparkline
+    UiDownload
   },
   data () {
     return {
@@ -154,8 +157,8 @@ export default {
       metadata: 'master/Metadata.csv',
       socialBeta: 'master/covid19socialmonitoring.csv',
       license: 'https://github.com/statistikZH/covid19_indikatorenUebersicht/blob/master/LICENSE',
-      statistik: 'https://statistik.zh.ch/internet/justiz_inneres/statistik/de/covid19.html',
-      monitoring: 'https://statistikzh.github.io/covid19monitoring',
+      statistik: 'https://www.zh.ch/de/gesundheit/coronavirus/zahlen-fakten-covid-19.html',
+      monitoring: 'https://www.zh.ch/de/news-uebersicht/mitteilungen/2020/politik-staat/statistik/durch-die-krise-begleiten---gesellschaftsmonitoring-covid19-.html',
       filter: {
         select: 'Alle',
         options: []
@@ -225,16 +228,27 @@ export default {
     }
   },
   methods: {
-    updateRouter () {
-      this.$router.push('/' + this.pagination.rowsPerPage + '/' + this.filter.select)
+    getVariablePath (row) {
+      return `${this.urlRepoRaw}master/variables/${row.id}.csv`
     },
-    sparklineData (group) {
-      let values = group.map(o => o.value !== 'NA' ? o.value : 0)
-      // get only last 90
-      if (values.length > 90) {
-        values = values.slice((values.length - 90), values.length)
-      }
-      return values
+    goToCSV (row) {
+      this.$statUtils.loadCSV(
+        this.getVariablePath(row),
+        (array) => {
+          this.$statUtils.exportCSVfromObj(this.fileName(row) + '.csv', array)
+        }
+      )
+    },
+    getJSON (row) {
+      this.$statUtils.loadCSV(
+        this.getVariablePath(row),
+        (array) => {
+          this.$statUtils.exportJSONfromObj(this.fileName(row) + '.json', array)
+        }
+      )
+    },
+    updateRouter () {
+      this.$router.push('/' + this.pagination.rowsPerPage + '/' + this.filter.select).catch(() => {})
     },
     fileName (row) {
       let string = `Covid-19_${row.variable_short}_${row.location}_${row.source}_` + new Date().toLocaleDateString().replace(' ', '_')
@@ -258,12 +272,6 @@ export default {
         this.pagination.sortBy = field
         this.pagination.descending = false
       }
-    },
-    dateRange (data) {
-      const dates = data.map(o => this.$statUtils.sortDateToSeconds(o.date))
-      const from = this.$statUtils.sortToLabelDate(this.$statUtils.secondsToLabelDate(Math.min(...dates)))
-      const to = this.$statUtils.sortToLabelDate(this.$statUtils.secondsToLabelDate(Math.max(...dates)))
-      return `${from} bis ${to}`
     }
   },
   created () {
@@ -281,25 +289,8 @@ export default {
     this.$statUtils.loadCSV(
       this.urlRepoRaw + this.metadata,
       (array) => {
-        let meta = array
-
-        // unique options for filter select
+        this.meta = array
         this.filter.options = ['Alle', ...new Set(array.map(o => o.topic))]
-
-        this.$statUtils.loadCSV(
-          this.urlRepoRaw + this.socialBeta,
-          (array2) => {
-            // append to all meta item the filtered data
-            meta = meta.map(o => {
-              o.group = array2.filter(e => {
-                return o.topic === e.topic && o.variable_short === e.variable_short && o.location === e.location
-              })
-              o.range = this.dateRange(o.group)
-              return o
-            })
-            this.meta = meta
-          }
-        )
       }
     )
   }
