@@ -1,24 +1,318 @@
-// Quasar Stylus Variables
-// --------------------------------------------------
-// To customize the look and feel of this app, you can override
-// the Stylus variables found in Quasar's source Stylus files.
+$space-base   = 16px
 
-// Check documentation for full list of Quasar variables
+$zh-spaces = {
+  s8:  8px,
+  s12: 12px,
+  s16: 16px,
+  s20: 20px,
+  s24: 24px,
+  s32: 32px,
+  s40: 40px,
+  s56: 56px,
+  s80: 80px
+}
 
-// Your own variables (that are declared here) and Quasar's own
-// ones will be available out of the box in your .vue/.styl files
+$flex-cols  = 12
+$flex-gutter = $zh-spaces
 
-// It's highly recommended to change the default colors
-// to match your app's branding.
-// Tip: Use the "Theme Builder" on Quasar's documentation website.
+// Max width at which point
+// zhweb breakpoints
+$breakpoint-xs = 320px
+//               400px
+$breakpoint-sm = 600px
+$breakpoint-md = 840px
+$breakpoint-lg = 1024px
+$breakpoint-xl = 1280px
 
-$primary   = #1976D2
-$secondary = #26A69A
-$accent    = #9C27B0
+$sizes = {
+  xs: 0,              // Extra small screen
+  sm: $breakpoint-sm, // Small screen
+  md: $breakpoint-md, // Medium screen
+  lg: $breakpoint-lg, // Large screen
+  xl: $breakpoint-xl  // Extra large screen
+}
 
-$dark      = #1D1D1D
+$breakpoint-xs-min = 0
+$breakpoint-xs-max = $sizes.sm - 1
 
-$positive  = #21BA45
-$negative  = #C10015
-$info      = #31CCEC
-$warning   = #F2C037
+$breakpoint-sm-min = $sizes.sm
+$breakpoint-sm-max = $sizes.md - 1
+
+$breakpoint-md-min = $sizes.md
+$breakpoint-md-max = $sizes.lg - 1
+
+$breakpoint-lg-min = $sizes.lg
+$breakpoint-lg-max = $sizes.xl - 1
+
+$breakpoint-xl-min = $sizes.xl
+$breakpoint-xl-max = 9999px
+
+all-sizes(t, key)
+  $str = '.q-' + t + '-' + key
+  for $k, $v in $sizes
+    $str = $str + ', body.screen--' + $k + ' .q-' + t + '-' + $k + '-' + key
+  return $str
+
+// quasar/css/core/size.styl
+:root
+  for $name, $size in $sizes
+    --q-size-{$name}: $size
+
+for $key, $value in $zh-spaces
+  {all-sizes('pa', $key)}
+    padding: $value $value
+  {all-sizes('pl', $key)}
+    padding-left: $value
+  {all-sizes('pr', $key)}
+    padding-right: $value
+  {all-sizes('pt', $key)}
+    padding-top: $value
+  {all-sizes('pb', $key)}
+    padding-bottom: $value
+  {all-sizes('px', $key)}
+    padding-left: $value
+    padding-right: $value
+  {all-sizes('py', $key)}
+    padding-top: $value
+    padding-bottom: $value
+
+  {all-sizes('ma', $key)}
+    margin: $value $value
+  {all-sizes('ml', $key)}
+    margin-left: $value
+  {all-sizes('mr', $key)}
+    margin-right: $value
+  {all-sizes('mt', $key)}
+    margin-top: $value
+  {all-sizes('mb', $key)}
+    margin-bottom: $value
+  {all-sizes('mx', $key)}
+    margin-left: $value
+    margin-right: $value
+  {all-sizes('my', $key)}
+    margin-top: $value
+    margin-bottom: $value
+
+.q-gutter
+  for $key, $value in $zh-spaces
+    &-x-{$key}
+      margin-left: (- $value)
+      > *
+        margin-left: $value
+    &-y-{$key}
+      margin-top: (- $value)
+      > *
+        margin-top: $value
+    &-{$key}
+      @extends .q-gutter-x-{$key}, .q-gutter-y-{$key}
+
+for $k, $v in $sizes
+  body.screen--{$k} .q-gutter-{$k}
+    for $key, $value in $zh-spaces
+      &-x-{$key}
+        margin-left: (- $value)
+        > *
+          margin-left: $value
+      &-y-{$key}
+        margin-top: (- $value)
+        > *
+          margin-top: $value
+      &-{$key}
+        @extends body.screen--{$k} .q-gutter-{$k}-x-{$key}, body.screen--{$k} .q-gutter-{$k}-y-{$key}
+
+.q-col-gutter
+  for $key, $value in $zh-spaces
+    &-x-{$key}
+      margin-left: (- $value)
+      > *
+        padding-left: $value
+    &-y-{$key}
+      margin-top: (- $value)
+      > *
+        padding-top: $value
+    &-{$key}
+      @extends .q-col-gutter-x-{$key}, .q-col-gutter-y-{$key}
+
+for $k, $v in $sizes
+  body.screen--{$k} .q-col-gutter-{$k}
+    for $key, $value in $zh-spaces
+      &-x-{$key}
+        margin-left: (- $value)
+        > *
+          padding-left: $value
+      &-y-{$key}
+        margin-top: (- $value)
+        > *
+          padding-top: $value
+      &-{$key}
+        @extends body.screen--{$k} .q-col-gutter-{$k}-x-{$key}, body.screen--{$k} .q-col-gutter-{$k}-y-{$key}
+
+$zh-size-curves = {
+  Big:     { xs: $zh-spaces.s56, sm: $zh-spaces.s56, md: $zh-spaces.s80, lg: $zh-spaces.s80, xl: $zh-spaces.s80 },
+  Large:   { xs: $zh-spaces.s40, sm: $zh-spaces.s40, md: $zh-spaces.s56, lg: $zh-spaces.s56, xl: $zh-spaces.s56 },
+  Medium:  { xs: $zh-spaces.s24, sm: $zh-spaces.s24, md: $zh-spaces.s32, lg: $zh-spaces.s32, xl: $zh-spaces.s40 },
+  Regular: { xs: $zh-spaces.s16, sm: $zh-spaces.s16, md: $zh-spaces.s20, lg: $zh-spaces.s20, xl: $zh-spaces.s24 },
+  Small:   { xs: $zh-spaces.s12, sm: $zh-spaces.s12, md: $zh-spaces.s12, lg: $zh-spaces.s12, xl: $zh-spaces.s16 },
+  Tiny:    { xs: $zh-spaces.s8,  sm: $zh-spaces.s8,  md: $zh-spaces.s12, lg: $zh-spaces.s12, xl: $zh-spaces.s12 }
+}
+
+for $key, $value in $zh-size-curves
+  for $k, $v in $value
+    body.screen--{$k}
+
+      .q-pa-curve{$key}
+        padding: $v $v
+      .q-pl-curve{$key}
+        padding-left: $v
+      .q-pr-curve{$key}
+        padding-right: $v
+      .q-pt-curve{$key}
+        padding-top: $v
+      .q-pb-curve{$key}
+        padding-bottom: $v
+      .q-px-curve{$key}
+        @extends .q-pl-curve{$key}, .q-pr-curve{$key}
+      .q-py-curve{$key}
+        @extends .q-pt-curve{$key}, .q-pb-curve{$key}
+
+      .q-ma-curve{$key}
+        margin: $v $v
+      .q-ml-curve{$key}
+        margin-left: $v
+      .q-mr-curve{$key}
+        margin-right: $v
+      .q-mt-curve{$key}
+        margin-top: $v
+      .q-mb-curve{$key}
+        margin-bottom: $v
+      .q-mx-curve{$key}
+        @extends .q-ml-curve{$key}, .q-mr-curve{$key}
+      .q-my-curve{$key}
+        @extends .q-mt-curve{$key}, .q-mb-curve{$key}
+
+      .q-gutter
+        &-x-curve{$key}
+          margin-left: (- $v)
+          > *
+            margin-left: $v
+        &-y-curve{$key}
+          margin-top: (- $v)
+          > *
+            margin-top: $v
+        &-curve{$key}
+          @extends .q-gutter-x-curve{$key}, .q-gutter-y-curve{$key}
+
+      .q-col-gutter
+        &-x-curve{$key}
+          margin-left: (- $v)
+          > *
+            padding-left: ($v)
+        &-y-curve{$key}
+          margin-top: (- $v)
+          > *
+            padding-top: ($v)
+        &-curve{$key}
+          @extends .q-col-gutter-x-curve{$key}, .q-col-gutter-y-curve{$key}
+
+// s = font-size
+// n = line-height
+// l = smaller line-height for leadtext
+
+$ts = {
+  giant:         { s: 72px, n: 72px },
+  huge:          { s: 56px, n: 56px },
+  smallHuge:     { s: 48px, n: 48px },
+  biggerBig:     { s: 40px, n: 48px },
+  big:           { s: 32px, n: 38px },
+  smallBig:      { s: 28px, n: 34px },
+  large:         { s: 24px, n: 36px, l: 30px },
+  medium:        { s: 20px, n: 30px, l: 26px },
+  biggerRegular: { s: 18px, n: 27px, l: 24px },
+  regular:       { s: 16px, n: 24px },
+  small:         { s: 14px, n: 20px },
+  tiny:          { s: 12px, n: 18px }
+}
+
+all-fonts(key)
+  $str = '.text-' + key
+  for $k, $v in $sizes
+    $str = $str + ', body.screen--' + $k + ' .text-' + $k + '-' + key
+  return $str
+
+for $key, $value in $ts
+  {all-fonts($key)}
+    font-size: $value.s
+    line-height: $value.n
+    if $value.l != null
+      &.text-heading
+        line-height: $value.l
+      
+// .text-curveHuge
+$tc = {
+  Huge: {
+    xs: $ts.smallBig,
+    sm: $ts.biggerBig,
+    md: $ts.smallHuge,
+    lg: $ts.huge,
+    xl: $ts.giant
+  },
+  Big: {
+    xs: $ts.large,
+    sm: $ts.smallBig,
+    md: $ts.big,
+    lg: $ts.biggerBig,
+    xl: $ts.smallHuge
+  },
+  Large: {
+    xs: $ts.biggerRegular,
+    sm: $ts.large,
+    md: $ts.large,
+    lg: $ts.smallBig,
+    xl: $ts.big
+  },
+  Medium: {
+    xs: $ts.biggerRegular,
+    sm: $ts.medium,
+    md: $ts.medium,
+    lg: $ts.large,
+    xl: $ts.smallBig
+  },
+  BiggerRegular: {
+    xs: $ts.biggerRegular,
+    sm: $ts.medium,
+    md: $ts.medium,
+    lg: $ts.medium,
+    xl: $ts.large
+  },
+  Regular: {
+    xs: $ts.regular,
+    sm: $ts.biggerRegular,
+    md: $ts.biggerRegular,
+    lg: $ts.biggerRegular,
+    xl: $ts.medium
+  },
+  Small: {
+    xs: $ts.small,
+    sm: $ts.regular,
+    md: $ts.regular,
+    lg: $ts.biggerRegular,
+    xl: $ts.biggerRegular
+  },
+  Tiny: {
+    xs: $ts.tiny,
+    sm: $ts.small,
+    md: $ts.small,
+    lg: $ts.small,
+    xl: $ts.small
+  }
+}
+
+for $key, $value in $tc
+  for $k, $v in $value
+    body.screen--{$k}
+      .text-curve{$key}
+        font-size: $v.s
+        line-height: $v.n
+        if $v.l != null
+          &.text-heading
+            line-height: $v.l

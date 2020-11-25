@@ -1,131 +1,94 @@
 <template>
-  <q-page>
-    <div class="q-ma-md">
+  <div>
+    <!-- loading or table -->
+    <q-linear-progress v-if="meta.length === 0" indeterminate />
+    <template v-else>
 
-      <h2 class="q-mt-lg q-mb-sm text-h6">Links</h2>
+      <!-- filter -->
+      <div class="row q-col-gutter-s8 q-mb-s40">
+        <z-select label="Filter" v-model="filter.select" :options="filter.options" style="min-width:150px" />
+        <z-input placeholder="Suche" v-model="filter.search" search clearable />
+      </div>
 
-      <div class="row q-gutter-sm q-mb-sm items-center">
-        <span>Mehr Informationen zum Monitoring:</span>
-        <ui-link label="Gesellschaftsmonitoring COVID-19" :href="monitoring" />
-      </div>
-      <div class="row q-gutter-sm q-mb-sm items-center">
-        <span>Download Daten, alle Indikatoren:</span>
-        <ui-link label="covid19socialmonitoring.csv (RAW)" :href="urlRepoRaw + socialBeta" />
-      </div>
-      <div class="row q-gutter-sm q-mb-md items-center">
-        <span>Download Metadaten, alle Indikatoren</span>
-        <ui-link label="Metadata.csv (RAW)" :href="urlRepoRaw + metadata" />
-      </div>
-      <div class="row q-gutter-sm q-mb-md items-center">
-        <span>Weitere Informationen des Statistischen Amtes zur COVID-19-Krise</span>
-        <ui-link label="Analysen und Daten zu COVID-19" :href="statistik" />
-      </div>
-      <cite>Zitierhinweis: Ursprüngliche Datenherkunft (intervista, SIX, Flughafen Zürich etc.) / "Gesellschaftsmonitoring COVID-19 STAT"</cite>
-
-      <!-- loading or table -->
-      <q-linear-progress v-if="meta.length === 0" indeterminate class="q-my-xl" />
-      <template v-else>
-        <div class="row q-gutter-sm q-mt-xl q-mb-md">
-          <q-select label="Filter" v-model="filter.select" :options="filter.options" outlined dense style="min-width:150px" />
-          <q-input label="Suche" v-model="search" outlined dense style="min-width:150px">
-            <template v-slot:append>
-            <q-icon v-if="search !== ''" name="close" @click="search = ''" class="cursor-pointer" />
-            <q-icon v-else name="search" />
-          </template>
-          </q-input>
-        </div>
-        <q-table
-          :data="filterData"
-          :columns="columns"
-          :pagination.sync="pagination"
-          row-key="topic"
-          :filter="search"
-          grid
-          grid-header
+      <!-- table sort -->
+      <div class="row q-col-gutter-x-s16">
+        <div
+          class="col-auto cursor-pointer"
+          v-for="(item, index) in columns" :key="index"
+          @click="
+            sort.key === item.field ? sort.asc = !sort.asc : sort.asc = true
+            sort.key = item.field
+          "
         >
+          <span :class="{ 'text-heading': sort.key === item.field }">{{ item.label }}</span>
+          <div style="width:20px; display:inline-block">
+            <q-icon :name="sort.asc ? $zhicons.arrowDown : $zhicons.arrowUp" size="xs" color="zhblue" v-if="sort.key === item.field" />
+          </div>
+        </div>
+      </div>
 
-          <!-- custom header for stacked table -->
-          <template v-slot:header="props">
-            <div class="row q-gutter-md" :props="props">
-              <div
-                v-for="col in props.cols"
-                class="col-auto sort_arrow"
-                style="cursor:pointer"
-                :key="col.name"
-                :props="props"
-                @click="headerClick(col.field)"
-              >
-                <!-- custom header (default one with grid option, overlap the page) -->
-                <q-icon
-                  :name="!pagination.descending || pagination.sortBy !== col.field ? 'arrow_upward' : 'arrow_downward'"
-                  :color="pagination.sortBy === col.field ? 'black' : 'white'"
-                />
-                {{ col.label }}
-              </div>
-            </div>
-          </template>
-
-          <!-- stacked rows -->
-          <template v-slot:item="props">
-            <div class="q-pa-xs q-py-sm col-12 grid-style-transition block">
-              <div class="row q-col-gutter-md">
-                <div class="col-12 col-sm-6 col-md-2">
-                  <q-item-label caption>Thema</q-item-label>
-                  <q-item-label class="text-weight-bold">{{ props.row.topic }}</q-item-label>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                  <q-item-label caption>Indikator</q-item-label>
-                  <q-item-label class="text-weight-bold">{{ props.row.variable_long }}</q-item-label>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                  <q-item-label caption>Von - bis</q-item-label>
-                  <q-item-label>
-                    {{ props.row.date_first_obs.split('-').reverse().join('.') }}
-                    bis
-                    {{ props.row.date_last_obs.split('-').reverse().join('.') }}
-                  </q-item-label>
-                </div>
-                <div class="col-12 col-sm-6 col-md-2">
-                  <q-item-label caption>Periodizität / Einheit</q-item-label>
-                  <q-item-label>{{ props.row.update }} / {{ props.row.unit }}</q-item-label>
-                </div>
-                <div class="col-12 col-sm-6 col-md-2">
-                  <q-item-label caption>Abdeckung</q-item-label>
-                  <q-item-label>{{ props.row.location }}</q-item-label>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                  <q-item-label caption>Quelle</q-item-label>
-                  <q-item-label>{{ props.row.source }}</q-item-label>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                  <q-item-label caption>Doku</q-item-label>
-                  <q-item-label>
-                    <a :href="props.row.description" target="_blank" style="text-decoration:none">
-                      <q-icon name="info" color="blue-6" size="md" text-color="white" />
-                    </a>
-                  </q-item-label>
-                </div>
-                <div class="col-12 col-sm-6 col-md-2">
-                  <q-item-label caption>Download</q-item-label>
-                  <q-item-label>
-                    <ui-download label="CSV" color="bg-green-4" @click.native="goToCSV(props.row)" class="q-mb-sm q-mr-sm" />
-                    <ui-download label="JSON" color="bg-orange-4" @click.native="getJSON(props.row)" class="q-mb-sm" />
-                  </q-item-label>
+      <!-- table -->
+      <z-data-filter :data="sortArray" :count="count">
+        <template slot-scope="{ item }">
+          <div class="row bg-zhblack5 q-mt-s8">
+            <div class="col">
+              <div class="q-pa-s8 q-py-s16 col-12">
+                <div class="row q-col-gutter-s16">
+                  <div class="col-12 col-sm-6 col-md-2">
+                    <q-item-label caption>Thema</q-item-label>
+                    <q-item-label class="text-heading">{{ item.topic }}</q-item-label>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-5">
+                    <q-item-label caption>Indikator</q-item-label>
+                    <q-item-label class="text-heading">{{ item.variable_long }}</q-item-label>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-3">
+                    <q-item-label caption>Von - bis</q-item-label>
+                    <q-item-label>
+                      {{ item.date_first_obs.split('-').reverse().join('.') }}
+                      bis
+                      {{ item.date_last_obs.split('-').reverse().join('.') }}
+                    </q-item-label>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-2">
+                    <q-item-label caption>Periodizität / Einheit</q-item-label>
+                    <q-item-label>{{ item.update }} / {{ item.unit }}</q-item-label>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-2">
+                    <q-item-label caption>Abdeckung</q-item-label>
+                    <q-item-label>{{ item.location }}</q-item-label>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-5">
+                    <q-item-label caption>Quelle</q-item-label>
+                    <q-item-label>{{ item.source }}</q-item-label>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-3">
+                    <q-item-label caption>Doku</q-item-label>
+                    <q-item-label>
+                      <a :href=" item.description" target="_blank" style="text-decoration:none">
+                        <q-icon :name="$zhicons.getInformation" size="sm" color="zhblue" />
+                      </a>
+                    </q-item-label>
+                  </div>
+                  <div class="col-12 col-sm-6 col-md-2">
+                    <q-item-label caption>Download</q-item-label>
+                    <q-item-label>
+                      <ui-download label="CSV" color="bg-green-4" @click.native="goToCSV(item)" class="q-mb-sm q-mr-sm" />
+                      <ui-download label="JSON" color="bg-orange-4" @click.native="getJSON(item)" class="q-mb-sm" />
+                    </q-item-label>
+                  </div>
                 </div>
               </div>
             </div>
-          </template>
-        </q-table>
-      </template>
+          </div>
+        </template>
+      </z-data-filter>
 
       <!-- license -->
-      <div class="row q-gutter-sm q-mb-md items-center">
-        <span>MIT License:</span>
-        <ui-link :href="license" />
-      </div>
+      <z-link :url="license" label="MIT License" target="_blank" :iconRight="$zhicons.arrowRight" />
 
-    </div>
-  </q-page>
+    </template>
+  </div>
 </template>
 
 <style>
@@ -142,89 +105,84 @@
 </style>
 
 <script>
-import UiLink from 'src/components/UiLink.vue'
 import UiDownload from 'src/components/UiDownload.vue'
 export default {
   name: 'PageIndex',
   components: {
-    UiLink,
-    UiDownload
+    UiDownload,
+    'z-select': () => import('quasar-app-extension-zhwebcomponents/src/component/atom/ZSelect.vue'),
+    'z-input': () => import('quasar-app-extension-zhwebcomponents/src/component/atom/ZInput.vue'),
+    'z-data-filter': () => import('quasar-app-extension-zhwebcomponents/src/component/atom/ZDataFilter.vue'),
+    'z-link': () => import('quasar-app-extension-zhwebcomponents/src/component/atom/ZLink.vue')
   },
   data () {
     return {
       urlRepoRaw: 'https://raw.githubusercontent.com/statistikZH/covid19monitoring/',
       urlRepo: 'https://github.com/statistikZH/covid19monitoring/blob/',
       metadata: 'master/Metadata.csv',
-      socialBeta: 'master/covid19socialmonitoring.csv',
       license: 'https://github.com/statistikZH/covid19_indikatorenUebersicht/blob/master/LICENSE',
-      statistik: 'https://www.zh.ch/de/gesundheit/coronavirus/zahlen-fakten-covid-19.html',
-      monitoring: 'https://www.zh.ch/de/news-uebersicht/mitteilungen/2020/politik-staat/statistik/durch-die-krise-begleiten---gesellschaftsmonitoring-covid19-.html',
       filter: {
         select: 'Alle',
-        options: []
+        options: [],
+        search: ''
       },
       // table defs ---------------------------------------------------------------------------
+      sort: {
+        key: 'topic',
+        asc: true
+      },
       columns: [
         {
-          name: 'topic',
-          align: 'left',
           label: 'Thema',
-          field: 'topic',
-          sortable: true
+          field: 'topic'
         },
         {
-          name: 'variable_long',
-          align: 'left',
           label: 'Indikator',
-          field: 'variable_long',
-          sortable: true
+          field: 'variable_long'
         },
         {
-          name: 'update',
-          align: 'left',
           label: 'Periodizität',
-          field: 'update',
-          sortable: true
+          field: 'update'
         },
         {
-          name: 'location',
-          align: 'left',
           label: 'Abdeckung',
-          field: 'location',
-          sortable: true
+          field: 'location'
         },
         {
-          name: 'source',
-          align: 'left',
           label: 'Quelle',
-          field: 'source',
-          sortable: true
+          field: 'source'
         }
       ],
-      pagination: {
-        sortBy: 'topic',
-        descending: false,
-        rowsPerPage: 0
-      },
+      count: 50,
       // data defs ---------------------------------------------------------------------------
-      meta: [],
-      search: ''
+      meta: []
     }
   },
   watch: {
-    'pagination.rowsPerPage' (newVal) {
-      this.updateRouter()
-    },
     'filter.select' (newVal) {
       this.updateRouter()
     }
   },
   computed: {
     filterData () {
-      if (this.filter.select === 'Alle') {
-        return this.meta
-      }
-      return this.meta.filter(o => o.topic === this.filter.select)
+      const search = this.filter.search.toLowerCase()
+      return this.meta
+        .filter(o => o.topic === this.filter.select || this.filter.select === 'Alle') // select
+        .filter(o => {
+          for (const key of Object.keys(o)) {
+            if (o[key].toLowerCase().includes(search)) {
+              return true
+            }
+          }
+          return false
+        }) // search
+    },
+    sortArray () {
+      return JSON.parse(JSON.stringify(this.filterData)).sort((a, b) => {
+        return this.sort.asc
+          ? (a[this.sort.key] > b[this.sort.key] ? 1 : a[this.sort.key] < b[this.sort.key] ? -1 : 0)
+          : (a[this.sort.key] < b[this.sort.key] ? 1 : a[this.sort.key] > b[this.sort.key] ? -1 : 0)
+      })
     }
   },
   methods: {
@@ -248,7 +206,7 @@ export default {
       )
     },
     updateRouter () {
-      this.$router.push('/' + this.pagination.rowsPerPage + '/' + this.filter.select).catch(() => {})
+      this.$router.push('/' + this.filter.select).catch(() => {})
     },
     fileName (row) {
       let string = `Covid-19_${row.variable_short}_${row.location}_${row.source}_` + new Date().toLocaleDateString().replace(' ', '_')
@@ -260,27 +218,9 @@ export default {
       string = string.replace(/Ü/g, 'Ue')
       string = string.replace(/\W+/g, '-')
       return string
-    },
-    headerClick (field) {
-      if (this.pagination.sortBy === field) {
-        if (this.pagination.descending === true) {
-          this.pagination.sortBy = null
-        } else if (this.pagination.descending === false) {
-          this.pagination.descending = true
-        }
-      } else {
-        this.pagination.sortBy = field
-        this.pagination.descending = false
-      }
     }
   },
   created () {
-    // update properties from router
-    if (this.$route.params.pagination && !isNaN(this.$route.params.pagination)) {
-      this.pagination.rowsPerPage = parseInt(this.$route.params.pagination)
-    } else {
-      this.pagination.rowsPerPage = 50
-    }
     if (this.$route.params.filter) {
       this.filter.select = this.$route.params.filter
     }

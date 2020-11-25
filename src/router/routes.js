@@ -1,12 +1,7 @@
 
 const routes = [
-  {
-    path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: ':pagination?/:filter?', component: () => import('pages/Index.vue') }
-    ]
-  }
+  { path: '/', redirect: '/Alle' },
+  { path: '/:filter?', component: () => import('pages/Index.vue') }
 ]
 
 // Always leave this as last one

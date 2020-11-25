@@ -1,6 +1,6 @@
 <template>
-  <q-chip square style="cursor:pointer" :class="`q-ma-none ${color}`">
-    <q-avatar icon="get_app" color="grey-6" text-color="white" />
+  <q-chip square style="cursor:pointer; border-radius:0" size="md" :class="`q-ma-none ${color}`">
+    <q-avatar :icon="$zhicons.download" color="grey-6" text-color="white" />
     {{ label }}
   </q-chip>
 </template>
