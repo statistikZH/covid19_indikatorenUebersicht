@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
-    "axios": "^0.21.1",
+    "axios": "^1.6.0",
     "quasar": "^1.0.0",
     "quasar-app-extension-zhwebcomponents": "git+https://bitbucket.statistik.zh.ch/scm/zw/zhwebcomponents.git",
     "vue-i18n": "^8.0.0"
